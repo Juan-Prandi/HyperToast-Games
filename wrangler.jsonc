@@ -2,7 +2,7 @@
   // Cloudflare Workers config — sitio estático para HyperToast Games
   // Docs: https://developers.cloudflare.com/workers/static-assets/
 
-  "name": "hypertoast-games",
+  "name": "worker-hypertoastgames",
   "compatibility_date": "2026-05-12",
 
   // Los archivos de la carpeta public/ se sirven como assets estáticos.

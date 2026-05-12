@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HyperToast Games — Tostando videojuegos indie</title>
+<meta name="description" content="HyperToast Games es un estudio indie creando videojuegos para Steam. Demo próximamente." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Bungee&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-1: #FFE66D;
+    --bg-2: #FF6B6B;
+    --bg-3: #4ECDC4;
+    --bg-4: #A78BFA;
+    --ink: #1A1B3A;
+    --cream: #FFF8E7;
+    --toast: #E8A66F;
+    --toast-dark: #C77A3F;
+    --pink: #FF6BB5;
+    --mint: #6BFFB0;
+    --shadow: 6px 6px 0 var(--ink);
+    --shadow-sm: 3px 3px 0 var(--ink);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3 { font-family: 'Fredoka', sans-serif; line-height: 1.1; }
+
+  .display { font-family: 'Bungee', cursive; letter-spacing: 0.5px; }
+
+  /* ====== NAV ====== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 4px solid var(--ink);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Bungee', cursive;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--toast);
+    border: 3px solid var(--ink);
+    border-radius: 8px 8px 4px 4px;
+    position: relative;
+    display: inline-block;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-6deg);
+  }
+  .logo-icon::before {
+    content: "";
+    position: absolute;
+    inset: 4px 4px 18px 4px;
+    background: var(--toast-dark);
+    border-radius: 4px;
+  }
+  .logo-icon::after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background: var(--ink);
+    box-shadow: 8px 0 0 var(--ink), -8px 0 0 var(--ink);
+  }
+  nav ul {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s;
+  }
+  nav a:hover { transform: translateY(-2px); color: var(--bg-2); }
+
+  /* ====== HERO ====== */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-4) 100%);
+    padding: 80px 32px 120px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    border: 4px solid var(--ink);
+  }
+  .hero::before {
+    width: 180px; height: 180px;
+    background: var(--mint);
+    top: 8%; left: -50px;
+    animation: float 8s ease-in-out infinite;
+  }
+  .hero::after {
+    width: 120px; height: 120px;
+    background: var(--pink);
+    bottom: 12%; right: 5%;
+    animation: float 6s ease-in-out infinite reverse;
+  }
+
+  .blob {
+    position: absolute;
+    border: 4px solid var(--ink);
+  }
+  .blob.b1 {
+    width: 60px; height: 60px;
+    background: var(--bg-3);
+    top: 20%; right: 15%;
+    transform: rotate(15deg);
+    animation: spin 12s linear infinite;
+  }
+  .blob.b2 {
+    width: 40px; height: 40px;
+    background: var(--mint);
+    border-radius: 50%;
+    bottom: 25%; left: 12%;
+    animation: float 5s ease-in-out infinite;
+  }
+  .blob.b3 {
+    width: 70px; height: 70px;
+    background: var(--bg-1);
+    transform: rotate(45deg);
+    top: 60%; right: 18%;
+    animation: spin 18s linear infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .tagline-tag {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--bg-1);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-family: 'Bungee', cursive;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    transform: rotate(-2deg);
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 9vw, 120px);
+    font-family: 'Bungee', cursive;
+    color: var(--cream);
+    text-shadow:
+      4px 4px 0 var(--ink),
+      8px 8px 0 var(--bg-4);
+    margin-bottom: 24px;
+    line-height: 0.95;
+  }
+  .hero h1 .tilt {
+    display: inline-block;
+    transform: rotate(-4deg);
+    color: var(--mint);
+  }
+
+  .hero p.sub {
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 700;
+    color: var(--ink);
+    max-width: 640px;
+    margin: 0 auto 40px;
+  }
+
+  /* ====== COUNTDOWN ====== */
+  .countdown-box {
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 24px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    display: inline-block;
+    margin-bottom: 32px;
+  }
+  .countdown-label {
+    font-family: 'Bungee', cursive;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--bg-2);
+    margin-bottom: 16px;
+  }
+  .countdown {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .count-cell {
+    background: var(--ink);
+    color: var(--bg-1);
+    border-radius: 12px;
+    padding: 14px 18px;
+    min-width: 84px;
+  }
+  .count-num {
+    font-family: 'Bungee', cursive;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1;
+    display: block;
+  }
+  .count-unit {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+    color: var(--bg-3);
+    font-weight: 800;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 16px 32px;
+    border-radius: 999px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    border: 4px solid var(--ink);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+  }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn.primary { background: var(--mint); color: var(--ink); }
+  .btn.secondary { background: var(--cream); color: var(--ink); }
+
+  /* ====== ABOUT ====== */
+  .about {
+    padding: 100px 32px;
+    background: var(--cream);
+    position: relative;
+  }
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-tag {
+    display: inline-block;
+    background: var(--bg-3);
+    color: var(--ink);
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 3px solid var(--ink);
+    font-family: 'Bungee', cursive;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .about h2 {
+    font-size: clamp(36px, 6vw, 64px);
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  .about h2 .accent {
+    color: var(--bg-2);
+    display: inline-block;
+    transform: rotate(-2deg);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 18px;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+  .about-text p strong { background: var(--bg-1); padding: 2px 6px; border-radius: 4px; }
+
+  /* Toaster illustration */
+  .toaster {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .toaster-body {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
+    height: 55%;
+    background: var(--bg-2);
+    border: 5px solid var(--ink);
+    border-radius: 24px 24px 16px 16px;
+    box-shadow: var(--shadow);
+  }
+  .toaster-slot {
+    position: absolute;
+    top: 12%;
+    left: 15%;
+    right: 15%;
+    height: 14px;
+    background: var(--ink);
+    border-radius: 7px;
+  }
+  .toast-piece {
+    position: absolute;
+    top: -28%;
+    left: 25%;
+    right: 25%;
+    height: 60%;
+    background: var(--toast);
+    border: 5px solid var(--ink);
+    border-radius: 50% 50% 8px 8px / 60% 60% 8px 8px;
+    animation: pop 3s ease-in-out infinite;
+  }
+  .toast-piece::after {
+    content: "";
+    position: absolute;
+    inset: 18% 14% 24% 14%;
+    background: var(--toast-dark);
+    border-radius: 50% 50% 8px 8px / 60% 60% 8px 8px;
+  }
+  .toast-piece .face {
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 4px;
+  }
+  @keyframes pop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  .toaster-knob {
+    position: absolute;
+    right: 18%;
+    bottom: 22%;
+    width: 38px;
+    height: 38px;
+    background: var(--bg-1);
+    border: 4px solid var(--ink);
+    border-radius: 50%;
+  }
+  .sparkle {
+    position: absolute;
+    background: var(--bg-1);
+    border: 3px solid var(--ink);
+    width: 24px;
+    height: 24px;
+    transform: rotate(45deg);
+  }
+  .sparkle.s1 { top: 8%; left: 12%; animation: float 3s ease-in-out infinite; }
+  .sparkle.s2 { top: 18%; right: 8%; width: 18px; height: 18px; animation: float 4s ease-in-out infinite reverse; }
+  .sparkle.s3 { bottom: 30%; left: 5%; width: 16px; height: 16px; animation: float 5s ease-in-out infinite; }
+
+  /* ====== VALUES ====== */
+  .values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 80px;
+  }
+  .value-card {
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+  }
+  .value-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .value-card:nth-child(1) { background: var(--bg-1); }
+  .value-card:nth-child(2) { background: var(--mint); }
+  .value-card:nth-child(3) { background: var(--pink); }
+  .value-emoji {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 16px;
+    font-family: 'Bungee', cursive;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  .value-card h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .value-card p {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 60px 32px 32px;
+    text-align: center;
+  }
+  footer .logo {
+    color: var(--cream);
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  footer p { opacity: 0.7; font-size: 14px; }
+  footer .tagline-foot {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    margin: 12px 0 24px;
+    color: var(--bg-1);
+  }
+  .socials {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .socials a {
+    width: 44px;
+    height: 44px;
+    background: var(--cream);
+    color: var(--ink);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 800;
+    font-family: 'Bungee', cursive;
+    font-size: 14px;
+    transition: transform 0.15s;
+  }
+  .socials a:hover { transform: translateY(-3px); background: var(--bg-1); }
+
+  /* ====== MOBILE ====== */
+  @media (max-width: 800px) {
+    nav { padding: 12px 18px; }
+    nav ul { gap: 16px; }
+    nav a { font-size: 12px; }
+    .hero { padding: 60px 18px 80px; }
+    .about { padding: 70px 18px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .values { grid-template-columns: 1fr; }
+    .count-cell { min-width: 64px; padding: 10px 12px; }
+    .countdown { gap: 8px; }
+    .countdown-box { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">
+    <span class="logo-icon"></span>
+    HyperToast
+  </a>
+  <ul>
+    <li><a href="#about">Estudio</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="demo">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <div class="hero-content">
+    <span class="tagline-tag">★ Estudio indie · Steam ★</span>
+    <h1>Tostando <br><span class="tilt">videojuegos</span> calentitos</h1>
+    <p class="sub">Somos <strong>HyperToast Games</strong>, un pequeño estudio indie creando experiencias deliciosamente raras. Nuestra primera demo sale del horno muy pronto.</p>
+
+    <div class="countdown-box">
+      <div class="countdown-label">⏰ Demo en…</div>
+      <div class="countdown" id="countdown">
+        <div class="count-cell"><span class="count-num" id="days">--</span><div class="count-unit">Días</div></div>
+        <div class="count-cell"><span class="count-num" id="hours">--</span><div class="count-unit">Horas</div></div>
+        <div class="count-cell"><span class="count-num" id="mins">--</span><div class="count-unit">Min</div></div>
+        <div class="count-cell"><span class="count-num" id="secs">--</span><div class="count-unit">Seg</div></div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#about" class="btn primary">Conoce al estudio</a>
+      <a href="#contact" class="btn secondary">Sigue el lanzamiento</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-tag">Sobre el estudio</span>
+        <h2>Hacemos juegos con <span class="accent">alma</span> y <span class="accent">crocancia</span>.</h2>
+        <p>HyperToast Games nació de una idea simple: los mejores juegos, como las mejores tostadas, necesitan <strong>tiempo, calor y un poquito de magia</strong>.</p>
+        <p>Somos un equipo pequeño obsesionado con el detalle. Creamos juegos indie para Steam que mezclan <strong>mecánicas frescas</strong>, <strong>estética distintiva</strong> y <strong>mucho corazón</strong>.</p>
+        <p>Nuestro primer proyecto está en pleno desarrollo y la demo se cocina mientras lees esto. Suscríbete para ser de los primeros en probarla.</p>
+      </div>
+
+      <div class="toaster" aria-hidden="true">
+        <div class="sparkle s1"></div>
+        <div class="sparkle s2"></div>
+        <div class="sparkle s3"></div>
+        <div class="toaster-body">
+          <div class="toaster-slot">
+            <div class="toast-piece"><span class="face">^_^</span></div>
+          </div>
+          <div class="toaster-knob"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="values">
+      <div class="value-card">
+        <div class="value-emoji">★</div>
+        <h3>Indie hasta los huesos</h3>
+        <p>Independencia creativa. Cero compromisos con la visión.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-emoji">♥</div>
+        <h3>Jugadores primero</h3>
+        <p>Diseñamos pensando en quien va a tomar el control.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-emoji">⚡</div>
+        <h3>Pulido y crocante</h3>
+        <p>Mecánicas claras, sensación rica, sin relleno innecesario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <a href="#" class="logo">
+    <span class="logo-icon"></span>
+    HyperToast
+  </a>
+  <p class="tagline-foot">Tostando videojuegos indie desde 2026</p>
+  <div class="socials">
+    <a href="#" title="Twitter/X">X</a>
+    <a href="#" title="Discord">DC</a>
+    <a href="#" title="Steam">ST</a>
+    <a href="#" title="YouTube">YT</a>
+  </div>
+  <p>© 2026 HyperToast Games · contacto@hypertoast.games</p>
+</footer>
+
+<script>
+  // Countdown — 60 días desde hoy (12 mayo 2026 → 11 julio 2026)
+  const target = new Date('2026-07-11T12:00:00').getTime();
+
+  function tick() {
+    const now = Date.now();
+    const diff = Math.max(0, target - now);
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('days').textContent = String(d).padStart(2, '0');
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('secs').textContent = String(s).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

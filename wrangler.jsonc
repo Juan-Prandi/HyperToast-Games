@@ -1,0 +1,20 @@
+{
+  // Cloudflare Workers config — sitio estático para HyperToast Games
+  // Docs: https://developers.cloudflare.com/workers/static-assets/
+
+  "name": "hypertoast-games",
+  "compatibility_date": "2026-05-12",
+
+  // Los archivos de la carpeta public/ se sirven como assets estáticos.
+  // single_page_application: false porque es un landing tradicional,
+  // no una SPA. Cambialo a true si más adelante usás un router de cliente.
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  },
+
+  // observability deja métricas y logs activados en el dashboard
+  "observability": {
+    "enabled": true
+  }
+}
